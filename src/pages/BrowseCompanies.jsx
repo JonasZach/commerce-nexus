@@ -156,6 +156,14 @@ export default function BrowseCompanies() {
         ))}
       </div>
 
+      {selected && (
+        <CompanyDetailModal
+          company={selected}
+          viewerCompany={myCompany}
+          onClose={() => setSelected(null)}
+        />
+      )}
+
       {filtered.length === 0 && (
         <div className="text-center py-16">
           <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
