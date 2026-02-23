@@ -9,7 +9,7 @@ import {
   Building2, FileText, Link2, Search,
   Shield, CheckCircle2, Clock, XCircle, AlertTriangle, Eye, X
 } from "lucide-react";
-import ImpersonateView from "../components/admin/ImpersonateView";
+import ImpersonateView from "@/components/admin/ImpersonateView";
 
 export default function AdminDashboard() {
   const [companies, setCompanies] = useState([]);
