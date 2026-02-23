@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   CheckCircle2, XCircle, Clock, Link2, Building2, Mail, Phone, MapPin, Filter
 } from "lucide-react";
-import ConfirmDialog from "@/components/connections/ConfirmDialog.jsx";
+import ConfirmDialog from "../components/connections/ConfirmDialog.jsx";
 
 export default function Connections() {
   const [company, setCompany] = useState(null);
