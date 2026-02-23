@@ -54,6 +54,7 @@ import BrowseCompanies from './pages/BrowseCompanies';
 import BuyerRequests from './pages/BuyerRequests';
 import Connections from './pages/Connections';
 import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -65,6 +66,7 @@ export const PAGES = {
     "BuyerRequests": BuyerRequests,
     "Connections": Connections,
     "Profile": Profile,
+    "AdminDashboard": AdminDashboard,
 }
 
 export const pagesConfig = {
