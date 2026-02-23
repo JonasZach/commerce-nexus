@@ -69,6 +69,7 @@ export default function AdminDashboard() {
         allRequests={requests}
         allConnections={connections}
         onExit={() => setImpersonating(null)}
+        onConnectionsChange={loadData}
       />
     );
   }
