@@ -223,6 +223,21 @@ export default function ImpersonateView({ company, allCompanies, allRequests, al
                         ))}
                       </div>
                     )}
+                    <div className="mt-3">
+                      {alreadyConnected(r) ? (
+                        <Badge className="bg-slate-100 text-slate-500 text-xs">Request Sent</Badge>
+                      ) : (
+                        <Button
+                          size="sm"
+                          onClick={() => handleConnect(r)}
+                          disabled={connecting === r.id}
+                          className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full"
+                        >
+                          <Send className="w-3.5 h-3.5 mr-1.5" />
+                          {connecting === r.id ? "Sending..." : "Connect"}
+                        </Button>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
