@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   X, Building2, FileText, Link2, Clock, ArrowRight,
-  AlertTriangle, CheckCircle2, XCircle, Eye
+  AlertTriangle, CheckCircle2, XCircle, Eye, Send
 } from "lucide-react";
 
 export default function ImpersonateView({ company, allCompanies, allRequests, allConnections, onExit }) {
