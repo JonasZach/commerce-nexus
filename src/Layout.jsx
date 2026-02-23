@@ -163,6 +163,20 @@ export default function Layout({ children, currentPageName }) {
             <User className="w-[18px] h-[18px]" />
             <span className="font-medium">Profile</span>
           </Link>
+          {user?.role === "admin" && (
+            <Link
+              to={createPageUrl("AdminDashboard")}
+              onClick={() => setSidebarOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200
+                ${currentPageName === "AdminDashboard"
+                  ? "bg-[#2AA5A0] text-white"
+                  : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
+            >
+              <ShieldCheck className="w-[18px] h-[18px]" />
+              <span className="font-medium">Admin Panel</span>
+            </Link>
+          )}
           <button
             onClick={() => base44.auth.logout()}
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-all w-full"
