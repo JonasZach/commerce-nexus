@@ -291,13 +291,37 @@ export default function ImpersonateView({ company, allCompanies, allRequests, al
                       </p>
                       {c.message && <p className="text-xs text-slate-400 mt-0.5">{c.message}</p>}
                     </div>
-                    <Badge className={`text-xs shrink-0 ${
-                      c.status === "accepted" ? "bg-green-100 text-green-700" :
-                      c.status === "rejected" ? "bg-red-100 text-red-700" :
-                      "bg-amber-100 text-amber-700"
-                    }`}>
-                      {c.status}
-                    </Badge>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {c.status === "pending" && (isBuyer || isSupplier) && (
+                        <>
+                          <Button
+                            size="sm"
+                            onClick={() => handleAction(c.id, "accepted")}
+                            disabled={actionLoading === c.id}
+                            className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Accept
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleAction(c.id, "rejected")}
+                            disabled={actionLoading === c.id}
+                            className="rounded-full text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <XCircle className="w-3.5 h-3.5 mr-1" /> Reject
+                          </Button>
+                        </>
+                      )}
+                      {c.status !== "pending" && (
+                        <Badge className={`text-xs ${
+                          c.status === "accepted" ? "bg-green-100 text-green-700" :
+                          "bg-red-100 text-red-700"
+                        }`}>
+                          {c.status}
+                        </Badge>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
