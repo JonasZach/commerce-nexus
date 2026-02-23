@@ -40,6 +40,33 @@ export default function ImpersonateView({ company, allCompanies, allRequests, al
   // Companies visible: all except own
   const visibleCompanies = allCompanies.filter(c => c.id !== company.id);
 
+  const alreadyConnected = (requestOrBuyerId) => {
+    const id = typeof requestOrBuyerId === "string" ? requestOrBuyerId : requestOrBuyerId.company_id;
+    return myConnections.some(c => c.buyer_company_id === id || c.buyer_request_id === requestOrBuyerId?.id);
+  };
+
+  const handleConnect = async (request) => {
+    setConnecting(request.id);
+    await base44.entities.ConnectionRequest.create({
+      supplier_company_id: company.id,
+      supplier_company_name: company.company_name,
+      buyer_company_id: request.company_id,
+      buyer_company_name: request.company_name,
+      buyer_request_id: request.id,
+      message: `Interested in your request: ${request.title}`,
+      status: "pending",
+    });
+    setConnecting(null);
+    if (onConnectionsChange) onConnectionsChange();
+  };
+
+  const handleAction = async (connId, status) => {
+    setActionLoading(connId);
+    await base44.entities.ConnectionRequest.update(connId, { status });
+    setActionLoading(null);
+    if (onConnectionsChange) onConnectionsChange();
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Impersonate Banner */}
