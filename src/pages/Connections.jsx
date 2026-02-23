@@ -35,8 +35,12 @@ export default function Connections() {
           const uniqueBuyerIds = [...new Set(conns.map(c => c.buyer_company_id).filter(Boolean))];
           const details = {};
           await Promise.all(uniqueBuyerIds.map(async (id) => {
-            const results = await base44.entities.Company.filter({ id });
-            if (results.length > 0) details[id] = results[0];
+            try {
+              const result = await base44.entities.Company.get(id);
+              if (result) details[id] = result;
+            } catch (e) {
+              // company not found, skip
+            }
           }));
           setBuyerDetails(details);
         }
