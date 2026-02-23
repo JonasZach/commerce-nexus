@@ -53,8 +53,12 @@ export default function BuyerRequests() {
       } else {
         // Supplier: show all open requests
         if (comp.is_active_member) {
-          const reqs = await base44.entities.BuyerRequest.filter({ status: "open" }, "-created_date");
+          const [reqs, conns] = await Promise.all([
+            base44.entities.BuyerRequest.filter({ status: "open" }, "-created_date"),
+            base44.entities.ConnectionRequest.filter({ supplier_company_id: comp.id }),
+          ]);
           setRequests(reqs);
+          setMyConnections(conns);
         }
       }
     }
