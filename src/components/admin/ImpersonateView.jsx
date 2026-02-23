@@ -11,10 +11,12 @@ import {
   AlertTriangle, CheckCircle2, XCircle, Eye, Send
 } from "lucide-react";
 
-export default function ImpersonateView({ company, allCompanies, allRequests, allConnections, onExit }) {
+export default function ImpersonateView({ company, allCompanies, allRequests, allConnections, onExit, onConnectionsChange }) {
   const isBuyer = company.company_type === "buyer";
   const isSupplier = company.company_type === "supplier";
   const isFreePlan = isSupplier && !company.is_active_member;
+  const [connecting, setConnecting] = useState(null);
+  const [actionLoading, setActionLoading] = useState(null);
 
   // Filter data as this company would see it
   const myRequests = isBuyer
