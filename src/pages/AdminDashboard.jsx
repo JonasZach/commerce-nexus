@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
-  Building2, FileText, Link2, Users, Search,
-  Shield, CheckCircle2, Clock, XCircle, MapPin, Filter, AlertTriangle
+  Building2, FileText, Link2, Search,
+  Shield, CheckCircle2, Clock, XCircle, AlertTriangle, Eye, X
 } from "lucide-react";
+import ImpersonateView from "../components/admin/ImpersonateView";
 
 export default function AdminDashboard() {
   const [companies, setCompanies] = useState([]);
@@ -16,6 +18,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [search, setSearch] = useState("");
+  const [impersonating, setImpersonating] = useState(null); // company object
 
   useEffect(() => { loadData(); }, []);
 
@@ -58,8 +61,19 @@ export default function AdminDashboard() {
     );
   }
 
+  if (impersonating) {
+    return (
+      <ImpersonateView
+        company={impersonating}
+        allCompanies={companies}
+        allRequests={requests}
+        allConnections={connections}
+        onExit={() => setImpersonating(null)}
+      />
+    );
+  }
+
   const suppliers = companies.filter(c => c.company_type === "supplier");
-  const buyers = companies.filter(c => c.company_type === "buyer");
   const activeSuppliers = suppliers.filter(c => c.is_active_member);
   const pendingConnections = connections.filter(c => c.status === "pending");
 
@@ -81,13 +95,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">
-            <Shield className="w-6 h-6 text-[#2AA5A0]" /> Admin Dashboard
-          </h1>
-          <p className="text-slate-500 mt-1">Full platform overview — all companies, requests, and connections</p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">
+          <Shield className="w-6 h-6 text-[#2AA5A0]" /> Admin Dashboard
+        </h1>
+        <p className="text-slate-500 mt-1">Full platform overview — all companies, requests, and connections</p>
       </div>
 
       {/* Stats */}
@@ -145,7 +157,7 @@ export default function AdminDashboard() {
                         <Building2 className="w-4 h-4 text-slate-400" />
                       </div>
                     )}
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                       <p className="font-semibold text-[#1B2A4A] truncate text-sm">{c.company_name}</p>
                       <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                         <Badge variant="secondary" className={`text-[10px] ${c.company_type === "supplier" ? "bg-blue-50 text-blue-700" : "bg-green-50 text-green-700"}`}>
@@ -181,6 +193,14 @@ export default function AdminDashboard() {
                       Membership expires: {new Date(c.membership_end_date).toLocaleDateString()}
                     </p>
                   )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full text-xs gap-1.5 mt-1"
+                    onClick={() => setImpersonating(c)}
+                  >
+                    <Eye className="w-3.5 h-3.5" /> View as this company
+                  </Button>
                 </CardContent>
               </Card>
             ))}
