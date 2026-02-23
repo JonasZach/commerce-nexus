@@ -9,18 +9,25 @@ import CompanyDetailModal from "@/components/companies/CompanyDetailModal";
 
 export default function BrowseCompanies() {
   const [companies, setCompanies] = useState([]);
+  const [myCompany, setMyCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [marketFilter, setMarketFilter] = useState("all");
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     loadCompanies();
   }, []);
 
   const loadCompanies = async () => {
-    const all = await base44.entities.Company.list("-created_date", 100);
+    const me = await base44.auth.me();
+    const [all, myCompanies] = await Promise.all([
+      base44.entities.Company.list("-created_date", 100),
+      base44.entities.Company.filter({ created_by: me.email }),
+    ]);
     setCompanies(all.filter(c => c.profile_completed));
+    if (myCompanies.length > 0) setMyCompany(myCompanies[0]);
     setLoading(false);
   };
 
