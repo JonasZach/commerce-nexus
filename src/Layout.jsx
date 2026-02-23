@@ -110,7 +110,7 @@ export default function Layout({ children, currentPageName }) {
           </Link>
         </div>
 
-        {company && (
+        {company && user?.role !== "admin" && (
           <div className="px-4 py-3 border-b border-white/10">
             <div className="flex items-center gap-3 p-2 rounded-lg bg-white/5">
               {company.logo_url ? (
