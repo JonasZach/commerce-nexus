@@ -11,7 +11,8 @@ import {
   Menu,
   X,
   ChevronRight,
-  User
+  User,
+  ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
