@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Building2, Globe, MapPin, Filter } from "lucide-react";
+import CompanyDetailModal from "@/components/companies/CompanyDetailModal";
 
 export default function BrowseCompanies() {
   const [companies, setCompanies] = useState([]);
