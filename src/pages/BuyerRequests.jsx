@@ -82,6 +82,7 @@ export default function BuyerRequests() {
   };
 
   const handleConnect = async (request) => {
+    setConnecting(request.id);
     await base44.entities.ConnectionRequest.create({
       supplier_company_id: company.id,
       supplier_company_name: company.company_name,
@@ -91,8 +92,12 @@ export default function BuyerRequests() {
       message: `Interested in your request: ${request.title}`,
       status: "pending",
     });
+    setConnecting(null);
     loadData();
   };
+
+  const alreadyConnected = (request) =>
+    myConnections.some(c => c.buyer_request_id === request.id || c.buyer_company_id === request.company_id);
 
   const toggleMarket = (market) => {
     setSelectedMarkets(prev =>
