@@ -33,6 +33,11 @@ export default function Dashboard() {
     const companies = await base44.entities.Company.filter({ created_by: me.email });
 
     if (companies.length === 0) {
+      if (me.role === "admin") {
+        // Admin with no company — redirect to admin panel
+        navigate(createPageUrl("AdminDashboard"));
+        return;
+      }
       navigate(createPageUrl("Register"));
       return;
     }
