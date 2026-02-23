@@ -91,7 +91,7 @@ export default function BrowseCompanies() {
       {/* Results */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map(company => (
-          <Card key={company.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
+          <Card key={company.id} className="border-0 shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelected(company)}>
             <CardContent className="p-5">
               <div className="flex items-start gap-3">
                 {company.logo_url ? (
