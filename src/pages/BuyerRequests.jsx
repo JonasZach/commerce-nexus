@@ -288,13 +288,21 @@ export default function BuyerRequests() {
                     )}
                   </div>
                   {isSupplier && (
-                    <Button
-                      size="sm"
-                      onClick={() => handleConnect(req)}
-                      className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full shrink-0"
-                    >
-                      <Send className="w-3.5 h-3.5 mr-1.5" /> Connect
-                    </Button>
+                    alreadyConnected(req) ? (
+                      <Badge className="bg-slate-100 text-slate-500 text-xs shrink-0">
+                        Request Sent
+                      </Badge>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => handleConnect(req)}
+                        disabled={connecting === req.id}
+                        className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full shrink-0"
+                      >
+                        <Send className="w-3.5 h-3.5 mr-1.5" />
+                        {connecting === req.id ? "Sending..." : "Connect"}
+                      </Button>
+                    )
                   )}
                 </div>
               </CardContent>
