@@ -30,11 +30,13 @@ const MARKETS = ["Cyprus", "Greece", "Europe", "Arabian Countries"];
 export default function BuyerRequests() {
   const [company, setCompany] = useState(null);
   const [requests, setRequests] = useState([]);
+  const [myConnections, setMyConnections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formData, setFormData] = useState({});
   const [selectedMarkets, setSelectedMarkets] = useState([]);
   const [saving, setSaving] = useState(false);
+  const [connecting, setConnecting] = useState(null);
 
   useEffect(() => { loadData(); }, []);
 
