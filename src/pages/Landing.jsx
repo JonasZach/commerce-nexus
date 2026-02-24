@@ -181,7 +181,7 @@ export default function Landing() {
                 period: "6 months",
                 desc: "Full access to the platform",
                 features: ["View & respond to buyer requests", "Send connection requests", "Priority visibility", "Full company details"],
-                highlight: true,
+                highlight: false,
               },
               {
                 name: "Active 12 Months",
@@ -189,7 +189,7 @@ export default function Landing() {
                 period: "12 months",
                 desc: "Best value for serious suppliers",
                 features: ["Everything in 6-month plan", "Save €120 compared to 2× 6-month", "Extended market exposure", "Premium badge"],
-                highlight: false,
+                highlight: true,
               },
             ].map((plan, i) => (
               <motion.div
