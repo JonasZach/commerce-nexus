@@ -6,9 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Building2, Upload, Save, Shield, Calendar } from "lucide-react";
-import { format } from "date-fns";
+import { Building2, Save } from "lucide-react";
+import SubscriptionCard from "@/components/profile/SubscriptionCard";
 
 const MARKETS = ["Cyprus", "Greece", "Europe", "Arabian Countries"];
 
@@ -70,39 +69,8 @@ export default function Profile() {
     <div className="max-w-3xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold text-[#1B2A4A]">Company Profile</h1>
 
-      {/* Membership Status for Suppliers */}
-      {isSupplier && (
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5 text-[#2AA5A0]" />
-                <div>
-                  <p className="font-medium text-[#1B2A4A]">Membership Status</p>
-                  <p className="text-sm text-slate-500 capitalize">
-                    {company.membership_plan === "free" ? "Free Plan" :
-                     company.membership_plan === "6_months" ? "Active — 6 Months" : "Active — 12 Months"}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                {company.is_active_member ? (
-                  <>
-                    <Badge className="bg-green-100 text-green-700">Active</Badge>
-                    {company.membership_end_date && (
-                      <p className="text-xs text-slate-400 mt-1">
-                        Expires: {format(new Date(company.membership_end_date), "MMM d, yyyy")}
-                      </p>
-                    )}
-                  </>
-                ) : (
-                  <Badge className="bg-slate-100 text-slate-600">Free</Badge>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Subscription Section for Suppliers */}
+      {isSupplier && <SubscriptionCard company={company} />}
 
       {/* Profile Form */}
       <Card className="border-0 shadow-sm">
