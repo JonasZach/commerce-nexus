@@ -19,10 +19,7 @@ export default function Landing() {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#1B2A4A] flex items-center justify-center">
-              <span className="text-[#2AA5A0] font-bold text-lg">C</span>
-            </div>
-            <span className="font-semibold text-lg text-[#1B2A4A] tracking-tight">Commerce Nexus</span>
+            <img src="https://media.base44.com/images/public/699c29f5a59121aa54dbc179/82eb061a0_commerce-nexus-logo-400x130.png" alt="Commerce Nexus" className="h-9 w-auto" />
           </div>
           <div className="flex items-center gap-3">
             {isAuth ? (
@@ -41,9 +38,9 @@ export default function Landing() {
                   Sign In
                 </Button>
                 <Link to={createPageUrl("Register")}>
-                  <Button className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full px-6">
-                    Get Started <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                <Button className="bg-[#00AEEF] hover:bg-[#009ad6] text-white rounded-full px-6">
+                  Get Started <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
                 </Link>
               </>
             )}
@@ -61,13 +58,13 @@ export default function Landing() {
             transition={{ duration: 0.7 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 bg-[#2AA5A0]/10 text-[#2AA5A0] rounded-full px-4 py-1.5 text-sm font-medium mb-8">
+            <div className="inline-flex items-center gap-2 bg-[#00AEEF]/10 text-[#00AEEF] rounded-full px-4 py-1.5 text-sm font-medium mb-8">
               <Globe className="w-4 h-4" />
               B2B Trade Platform — Cyprus, Greece, Europe & Arab Countries
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#1B2A4A] leading-tight tracking-tight">
               Connect with the
-              <span className="text-[#2AA5A0]"> right partners</span> for your business
+              <span className="text-[#00AEEF]"> right partners</span> for your business
             </h1>
             <p className="mt-6 text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
               Commerce Nexus bridges suppliers and buyers with speed and transparency. 
@@ -75,7 +72,7 @@ export default function Landing() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to={createPageUrl("Register")}>
-                <Button size="lg" className="bg-[#1B2A4A] hover:bg-[#243556] text-white rounded-full px-8 h-12 text-base">
+                <Button size="lg" className="bg-[#1B3A6B] hover:bg-[#162f58] text-white rounded-full px-8 h-12 text-base">
                   Register Your Company <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -101,7 +98,7 @@ export default function Landing() {
               { label: "Active 24/7", value: "Always", icon: TrendingUp },
             ].map((stat, i) => (
               <div key={i} className="text-center p-6 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                <stat.icon className="w-5 h-5 text-[#2AA5A0] mx-auto mb-3" />
+                <stat.icon className="w-5 h-5 text-[#00AEEF] mx-auto mb-3" />
                 <p className="text-2xl font-bold text-[#1B2A4A]">{stat.value}</p>
                 <p className="text-sm text-slate-400 mt-1">{stat.label}</p>
               </div>
@@ -147,8 +144,8 @@ export default function Landing() {
                 className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm relative group hover:shadow-md transition-shadow"
               >
                 <span className="text-5xl font-bold text-slate-100 absolute top-4 right-6 group-hover:text-[#2AA5A0]/10 transition-colors">{item.step}</span>
-                <div className="w-12 h-12 rounded-xl bg-[#2AA5A0]/10 flex items-center justify-center mb-5">
-                  <item.icon className="w-6 h-6 text-[#2AA5A0]" />
+                <div className="w-12 h-12 rounded-xl bg-[#00AEEF]/10 flex items-center justify-center mb-5">
+                  <item.icon className="w-6 h-6 text-[#00AEEF]" />
                 </div>
                 <h3 className="text-xl font-semibold text-[#1B2A4A] mb-2">{item.title}</h3>
                 <p className="text-slate-500 leading-relaxed">{item.desc}</p>
@@ -200,12 +197,12 @@ export default function Landing() {
                 transition={{ delay: i * 0.15 }}
                 className={`rounded-2xl p-8 border relative ${
                   plan.highlight
-                    ? "bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-xl shadow-[#1B2A4A]/10"
+                  ? "bg-[#1B3A6B] text-white border-[#1B3A6B] shadow-xl shadow-[#1B3A6B]/10"
                     : "bg-white border-slate-200"
                 }`}
               >
                 {plan.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2AA5A0] text-white text-xs font-medium px-3 py-1 rounded-full">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#00AEEF] text-white text-xs font-medium px-3 py-1 rounded-full">
                     Most Popular
                   </span>
                 )}
@@ -218,7 +215,7 @@ export default function Landing() {
                 <ul className="mt-6 space-y-3">
                   {plan.features.map((f, j) => (
                     <li key={j} className={`flex items-start gap-2 text-sm ${plan.highlight ? "text-white/80" : "text-slate-600"}`}>
-                      <Shield className={`w-4 h-4 mt-0.5 shrink-0 ${plan.highlight ? "text-[#2AA5A0]" : "text-[#2AA5A0]"}`} />
+                      <Shield className="w-4 h-4 mt-0.5 shrink-0 text-[#00AEEF]" />
                       {f}
                     </li>
                   ))}
@@ -227,8 +224,8 @@ export default function Landing() {
                   <Button
                     className={`w-full rounded-full h-11 ${
                       plan.highlight
-                        ? "bg-[#2AA5A0] hover:bg-[#249691] text-white"
-                        : "bg-[#1B2A4A] hover:bg-[#243556] text-white"
+                        ? "bg-[#00AEEF] hover:bg-[#009ad6] text-white"
+                        : "bg-[#1B3A6B] hover:bg-[#162f58] text-white"
                     }`}
                   >
                     Get Started <ArrowRight className="w-4 h-4 ml-2" />
@@ -241,13 +238,10 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 bg-[#1B2A4A] text-white/60">
+      <footer className="py-12 px-4 sm:px-6 bg-[#1B3A6B] text-white/60">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-[#2AA5A0] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
-            </div>
-            <span className="font-medium text-white">Commerce Nexus</span>
+            <img src="https://media.base44.com/images/public/699c29f5a59121aa54dbc179/82eb061a0_commerce-nexus-logo-400x130.png" alt="Commerce Nexus" className="h-8 w-auto brightness-0 invert" />
           </div>
           <p className="text-sm">© {new Date().getFullYear()} Commerce Nexus. All rights reserved.</p>
         </div>

@@ -65,7 +65,7 @@ export default function Layout({ children, currentPageName }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#1B2A4A] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[#1B3A6B] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -76,10 +76,10 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen bg-slate-50 flex">
       <style>{`
         :root {
-          --cn-navy: #1B2A4A;
-          --cn-navy-light: #243556;
-          --cn-teal: #2AA5A0;
-          --cn-teal-light: #35C4BE;
+          --cn-navy: #1B3A6B;
+          --cn-navy-light: #162f58;
+          --cn-teal: #00AEEF;
+          --cn-teal-light: #33C1F5;
           --cn-slate: #F1F5F9;
         }
       `}</style>
@@ -94,19 +94,13 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen w-[260px] bg-[#1B2A4A] text-white z-50 
+        className={`fixed lg:sticky top-0 left-0 h-screen w-[260px] bg-[#1B3A6B] text-white z-50 
           transform transition-transform duration-300 ease-out flex flex-col
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         <div className="p-6 border-b border-white/10">
           <Link to={createPageUrl("Dashboard")} className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#2AA5A0] flex items-center justify-center">
-              <span className="text-white font-bold text-lg">C</span>
-            </div>
-            <div>
-              <span className="font-semibold text-base tracking-tight">Commerce Nexus</span>
-              <p className="text-[11px] text-white/50 -mt-0.5">B2B Platform</p>
-            </div>
+            <img src="https://media.base44.com/images/public/699c29f5a59121aa54dbc179/82eb061a0_commerce-nexus-logo-400x130.png" alt="Commerce Nexus" className="h-8 w-auto brightness-0 invert" />
           </Link>
         </div>
 
@@ -116,8 +110,8 @@ export default function Layout({ children, currentPageName }) {
               {company.logo_url ? (
                 <img src={company.logo_url} className="w-8 h-8 rounded-md object-cover" alt="" />
               ) : (
-                <div className="w-8 h-8 rounded-md bg-[#2AA5A0]/20 flex items-center justify-center">
-                  <Building2 className="w-4 h-4 text-[#2AA5A0]" />
+                <div className="w-8 h-8 rounded-md bg-[#00AEEF]/20 flex items-center justify-center">
+                <Building2 className="w-4 h-4 text-[#00AEEF]" />
                 </div>
               )}
               <div className="min-w-0">
@@ -138,7 +132,7 @@ export default function Layout({ children, currentPageName }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200
                   ${isActive
-                    ? "bg-[#2AA5A0] text-white shadow-lg shadow-[#2AA5A0]/20"
+                    ? "bg-[#00AEEF] text-white shadow-lg shadow-[#00AEEF]/20"
                     : "text-white/60 hover:text-white hover:bg-white/5"
                   }`}
               >
@@ -156,7 +150,7 @@ export default function Layout({ children, currentPageName }) {
             onClick={() => setSidebarOpen(false)}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200
               ${currentPageName === "Profile"
-                ? "bg-[#2AA5A0] text-white"
+                ? "bg-[#00AEEF] text-white"
                 : "text-white/60 hover:text-white hover:bg-white/5"
               }`}
           >
@@ -169,7 +163,7 @@ export default function Layout({ children, currentPageName }) {
               onClick={() => setSidebarOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200
                 ${currentPageName === "AdminDashboard"
-                  ? "bg-[#2AA5A0] text-white"
+                  ? "bg-[#00AEEF] text-white"
                   : "text-white/60 hover:text-white hover:bg-white/5"
                 }`}
             >
@@ -200,7 +194,7 @@ export default function Layout({ children, currentPageName }) {
           <div className="ml-auto flex items-center gap-3">
             {user && (
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#1B2A4A] flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-[#1B3A6B] flex items-center justify-center">
                   <span className="text-white text-xs font-medium">
                     {user.full_name?.[0] || user.email?.[0]?.toUpperCase()}
                   </span>
