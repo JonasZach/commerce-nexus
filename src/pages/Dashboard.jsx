@@ -16,6 +16,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import StatsPanel from "@/components/dashboard/StatsPanel";
 
 export default function Dashboard() {
   const [company, setCompany] = useState(null);
@@ -185,6 +186,13 @@ export default function Dashboard() {
           </Card>
         </Link>
       </div>
+
+      {/* Activity Stats */}
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-5">
+          <StatsPanel company={company} />
+        </CardContent>
+      </Card>
 
       {/* Recent Connections */}
       {recentConnections.length > 0 && (
