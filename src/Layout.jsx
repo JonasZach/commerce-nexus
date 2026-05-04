@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import {
-  LayoutDashboard,
   Building2,
   FileText,
   Link2,
@@ -17,16 +16,14 @@ import {
 import { Button } from "@/components/ui/button";
 
 const NAV_ITEMS_BUYER = [
-  { name: "Dashboard", page: "Dashboard", icon: LayoutDashboard },
   { name: "Browse Companies", page: "BrowseCompanies", icon: Building2 },
-  { name: "My Requests", page: "BuyerRequests", icon: FileText },
+  { name: "View Requests", page: "BuyerRequests", icon: FileText },
   { name: "Connections", page: "Connections", icon: Link2 },
 ];
 
 const NAV_ITEMS_SUPPLIER = [
-  { name: "Dashboard", page: "Dashboard", icon: LayoutDashboard },
   { name: "Browse Companies", page: "BrowseCompanies", icon: Building2 },
-  { name: "Buyer Requests", page: "BuyerRequests", icon: FileText },
+  { name: "View Requests", page: "BuyerRequests", icon: FileText },
   { name: "Connections", page: "Connections", icon: Link2 },
 ];
 
