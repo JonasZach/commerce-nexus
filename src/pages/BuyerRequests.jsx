@@ -171,34 +171,14 @@ export default function BuyerRequests() {
                     onChange={(e) => setFormData(p => ({ ...p, description: e.target.value }))}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>Category</Label>
-                    <Select value={formData.category || ""} onValueChange={(v) => setFormData(p => ({ ...p, category: v }))}>
-                      <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select" /></SelectTrigger>
-                      <SelectContent>
-                        {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>Quantity</Label>
-                    <Input
-                      className="mt-1.5"
-                      placeholder="e.g., 500 kg"
-                      value={formData.quantity || ""}
-                      onChange={(e) => setFormData(p => ({ ...p, quantity: e.target.value }))}
-                    />
-                  </div>
-                </div>
                 <div>
-                  <Label>Budget Range</Label>
-                  <Input
-                    className="mt-1.5"
-                    placeholder="e.g., €5,000 - €10,000"
-                    value={formData.budget_range || ""}
-                    onChange={(e) => setFormData(p => ({ ...p, budget_range: e.target.value }))}
-                  />
+                  <Label>Category</Label>
+                  <Select value={formData.category || ""} onValueChange={(v) => setFormData(p => ({ ...p, category: v }))}>
+                    <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent>
+                      {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div>
                   <Label className="mb-2 block">Target Markets</Label>
@@ -267,14 +247,6 @@ export default function BuyerRequests() {
                         <span className="flex items-center gap-1">
                           <Tag className="w-3.5 h-3.5" /> {req.category}
                         </span>
-                      )}
-                      {req.quantity && (
-                        <span className="flex items-center gap-1">
-                          Qty: {req.quantity}
-                        </span>
-                      )}
-                      {req.budget_range && (
-                        <span>Budget: {req.budget_range}</span>
                       )}
                     </div>
                     {req.target_markets?.length > 0 && (
