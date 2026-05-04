@@ -9,6 +9,9 @@ const T = {
     noPending: "No pending connections", noAccepted: "No accepted connections yet", noRejected: "No rejected connections",
     accept: "Accept", reject: "Reject", waiting: "Waiting", connected: "Connected",
     contactDetails: "Contact Details",
+    received: "Received", sent: "Sent",
+    noReceived: "No received requests", noSent: "No sent requests",
+    receivedSub: "Requests waiting for your response", sentSub: "Requests you sent — waiting for their response",
   },
   gr: {
     title: "Συνδέσεις", buyerSub: "Διαχείριση αιτημάτων σύνδεσης από προμηθευτές", supplierSub: "Παρακολούθηση αιτημάτων σύνδεσης προς αγοραστές",
@@ -16,6 +19,9 @@ const T = {
     noPending: "Δεν υπάρχουν εκκρεμή", noAccepted: "Δεν υπάρχουν αποδεκτές συνδέσεις", noRejected: "Δεν υπάρχουν απορριφθέντα",
     accept: "Αποδοχή", reject: "Απόρριψη", waiting: "Αναμονή", connected: "Συνδεδεμένο",
     contactDetails: "Στοιχεία Επικοινωνίας",
+    received: "Ληφθέντα", sent: "Απεσταλμένα",
+    noReceived: "Δεν υπάρχουν ληφθέντα αιτήματα", noSent: "Δεν υπάρχουν απεσταλμένα αιτήματα",
+    receivedSub: "Αιτήματα που αναμένουν την απάντησή σας", sentSub: "Αιτήματα που στείλατε — αναμένετε απάντηση",
   },
 };
 import { Card, CardContent } from "@/components/ui/card";
@@ -97,6 +103,12 @@ export default function Connections() {
   const pending = connections.filter(c => c.status === "pending");
   const accepted = connections.filter(c => c.status === "accepted");
   const rejected = connections.filter(c => c.status === "rejected");
+
+  // For buyers: all pending are "received" (from suppliers). No "sent" for buyers.
+  // For suppliers: all pending are "sent" (they initiated). No "received" for suppliers.
+  // Split: received = the user needs to respond; sent = waiting for the other party.
+  const pendingReceived = isBuyer ? pending : []; // buyers receive from suppliers
+  const pendingSent = !isBuyer ? pending : [];    // suppliers sent to buyers
 
   const ConnectionCard = ({ conn }) => {
     const otherName = isBuyer ? conn.supplier_company_name : conn.buyer_company_name;
@@ -218,13 +230,47 @@ export default function Connections() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="pending" className="space-y-3 mt-4">
+        <TabsContent value="pending" className="mt-4 space-y-6">
           {pending.length === 0 ? (
             <div className="text-center py-12">
               <Clock className="w-10 h-10 text-slate-300 mx-auto mb-3" />
               <p className="text-slate-500">{t.noPending}</p>
             </div>
-          ) : pending.map(c => <ConnectionCard key={c.id} conn={c} />)}
+          ) : (
+            <>
+              {/* Received — needs user's response */}
+              {isBuyer && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-semibold text-[#1B2A4A]">{t.received}</span>
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">{pendingReceived.length}</span>
+                    <span className="text-xs text-slate-400 ml-1">— {t.receivedSub}</span>
+                  </div>
+                  {pendingReceived.length === 0 ? (
+                    <p className="text-sm text-slate-400 py-4 text-center">{t.noReceived}</p>
+                  ) : (
+                    <div className="space-y-3">{pendingReceived.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
+                  )}
+                </div>
+              )}
+
+              {/* Sent — waiting for the other party */}
+              {!isBuyer && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-semibold text-[#1B2A4A]">{t.sent}</span>
+                    <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">{pendingSent.length}</span>
+                    <span className="text-xs text-slate-400 ml-1">— {t.sentSub}</span>
+                  </div>
+                  {pendingSent.length === 0 ? (
+                    <p className="text-sm text-slate-400 py-4 text-center">{t.noSent}</p>
+                  ) : (
+                    <div className="space-y-3">{pendingSent.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="accepted" className="space-y-3 mt-4">
