@@ -292,6 +292,10 @@ export default function BuyerRequests() {
                       <Badge className="bg-slate-100 text-slate-500 text-xs shrink-0">
                         Request Sent
                       </Badge>
+                    ) : req.accept_connections === false ? (
+                      <Badge className="bg-slate-100 text-slate-400 text-xs shrink-0">
+                        Not Accepting
+                      </Badge>
                     ) : (
                       <Button
                         size="sm"

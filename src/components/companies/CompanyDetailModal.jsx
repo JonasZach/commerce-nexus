@@ -18,8 +18,8 @@ export default function CompanyDetailModal({ company, viewerCompany, onClose }) 
   // Buyers can see supplier details; active suppliers can see all details
   const canSeeDetails = isBuyerViewer || isActiveSupplier;
 
-  // Active suppliers can connect with buyers
-  const canConnect = isActiveSupplier && company.company_type === "buyer";
+  // Active suppliers can connect with buyers (only if buyer accepts connections)
+  const canConnect = isActiveSupplier && company.company_type === "buyer" && company.accept_connections !== false;
 
   const handleConnect = async () => {
     setConnecting(true);

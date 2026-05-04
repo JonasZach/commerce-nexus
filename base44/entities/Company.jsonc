@@ -1,0 +1,111 @@
+{
+  "name": "Company",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "description": "Name of the company"
+    },
+    "company_type": {
+      "type": "string",
+      "enum": [
+        "supplier",
+        "buyer"
+      ],
+      "description": "Whether this is a supplier or buyer company"
+    },
+    "business_type": {
+      "type": "string",
+      "description": "Type/industry of the company"
+    },
+    "country": {
+      "type": "string",
+      "description": "Country of headquarters"
+    },
+    "email": {
+      "type": "string",
+      "description": "Company contact email"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Company phone number"
+    },
+    "description": {
+      "type": "string",
+      "description": "A few sentences about the company"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "URL to company logo"
+    },
+    "preferred_markets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Cyprus",
+          "Greece",
+          "Europe",
+          "Arabian Countries"
+        ]
+      },
+      "description": "Markets the company wants to operate in"
+    },
+    "membership_plan": {
+      "type": "string",
+      "enum": [
+        "free",
+        "6_months",
+        "12_months"
+      ],
+      "default": "free",
+      "description": "Supplier membership plan"
+    },
+    "membership_start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "When the active membership started"
+    },
+    "membership_end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "When the active membership expires"
+    },
+    "is_active_member": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the supplier has an active paid membership"
+    },
+    "profile_completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the company profile setup is complete"
+    },
+    "card_holder": {
+      "type": "string",
+      "description": "Name on the payment card"
+    },
+    "card_last4": {
+      "type": "string",
+      "description": "Last 4 digits of the payment card"
+    },
+    "card_expiry": {
+      "type": "string",
+      "description": "Card expiry date MM/YY"
+    },
+    "card_brand": {
+      "type": "string",
+      "description": "Card brand e.g. Visa, Mastercard"
+    },
+    "accept_connections": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the company accepts incoming connection requests"
+    }
+  },
+  "required": [
+    "company_name",
+    "company_type",
+    "email"
+  ]
+}

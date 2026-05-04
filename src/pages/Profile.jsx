@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Building2, Save } from "lucide-react";
 import SubscriptionCard from "@/components/profile/SubscriptionCard";
 
@@ -164,6 +165,22 @@ export default function Profile() {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Connection Requests Toggle */}
+          <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50">
+            <div>
+              <p className="font-medium text-[#1B2A4A] text-sm">Accept Connection Requests</p>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {formData.accept_connections === false
+                  ? "You are not accepting new connection requests"
+                  : "Others can send you connection requests"}
+              </p>
+            </div>
+            <Switch
+              checked={formData.accept_connections !== false}
+              onCheckedChange={(val) => setFormData(p => ({ ...p, accept_connections: val }))}
+            />
           </div>
 
           <Button
