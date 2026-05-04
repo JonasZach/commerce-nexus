@@ -19,8 +19,8 @@ import { Button } from "@/components/ui/button";
 const PUBLIC_PAGES = ["Landing", "Register"];
 
 const NAV_LABELS = {
-  en: { browse: "Browse Companies", requests: "View Requests", connections: "Connections", profile: "Profile", admin: "Admin Panel", signout: "Sign Out" },
-  gr: { browse: "Εταιρείες", requests: "Αιτήματα", connections: "Συνδέσεις", profile: "Προφίλ", admin: "Διαχειριστής", signout: "Αποσύνδεση" },
+  en: { browse: "Browse Companies", requests: "View Requests Sent", connections: "Connections", profile: "Profile", admin: "Admin Panel", signout: "Sign Out" },
+  gr: { browse: "Εταιρείες", requests: "Αιτήματα που Στάλθηκαν", connections: "Συνδέσεις", profile: "Προφίλ", admin: "Διαχειριστής", signout: "Αποσύνδεση" },
 };
 
 export default function Layout({ children, currentPageName }) {
