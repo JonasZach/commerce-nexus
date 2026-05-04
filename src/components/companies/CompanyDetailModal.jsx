@@ -19,17 +19,34 @@ export default function CompanyDetailModal({ company, viewerCompany, onClose }) 
   const canSeeDetails = isBuyerViewer || isActiveSupplier;
 
   // Active suppliers can connect with buyers (only if buyer accepts connections)
-  const canConnect = isActiveSupplier && company.company_type === "buyer" && company.accept_connections !== false;
+  const canSupplierConnect = isActiveSupplier && company.company_type === "buyer" && company.accept_connections !== false;
+  // Buyers can connect with suppliers
+  const canBuyerConnect = isBuyerViewer && company.company_type === "supplier";
+  const canConnect = canSupplierConnect || canBuyerConnect;
 
   const handleConnect = async () => {
     setConnecting(true);
-    await base44.entities.ConnectionRequest.create({
-      supplier_company_id: viewerCompany.id,
-      supplier_company_name: viewerCompany.company_name,
-      buyer_company_id: company.id,
-      buyer_company_name: company.company_name,
-      message: message || undefined,
-    });
+    if (canBuyerConnect) {
+      // Buyer initiates connection to supplier
+      await base44.entities.ConnectionRequest.create({
+        supplier_company_id: company.id,
+        supplier_company_name: company.company_name,
+        buyer_company_id: viewerCompany.id,
+        buyer_company_name: viewerCompany.company_name,
+        message: message || undefined,
+        initiated_by_type: "buyer",
+      });
+    } else {
+      // Supplier initiates connection to buyer
+      await base44.entities.ConnectionRequest.create({
+        supplier_company_id: viewerCompany.id,
+        supplier_company_name: viewerCompany.company_name,
+        buyer_company_id: company.id,
+        buyer_company_name: company.company_name,
+        message: message || undefined,
+        initiated_by_type: "supplier",
+      });
+    }
     setConnecting(false);
     setConnected(true);
   };

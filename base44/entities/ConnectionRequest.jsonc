@@ -1,0 +1,53 @@
+{
+  "name": "ConnectionRequest",
+  "type": "object",
+  "properties": {
+    "supplier_company_id": {
+      "type": "string",
+      "description": "ID of the supplier company"
+    },
+    "supplier_company_name": {
+      "type": "string",
+      "description": "Name of the supplier company"
+    },
+    "buyer_company_id": {
+      "type": "string",
+      "description": "ID of the buyer company"
+    },
+    "buyer_company_name": {
+      "type": "string",
+      "description": "Name of the buyer company"
+    },
+    "buyer_request_id": {
+      "type": "string",
+      "description": "Optional - ID of the buyer request this connection is about"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message from the initiator"
+    },
+    "initiated_by_type": {
+      "type": "string",
+      "enum": [
+        "supplier",
+        "buyer"
+      ],
+      "default": "supplier",
+      "description": "Whether the connection was initiated by the supplier or the buyer"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Status of the connection request"
+    }
+  },
+  "required": [
+    "supplier_company_id",
+    "buyer_company_id"
+  ]
+}

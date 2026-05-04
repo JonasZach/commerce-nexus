@@ -58,10 +58,11 @@ export default function Connections() {
         conns = await base44.entities.ConnectionRequest.filter({ supplier_company_id: comp.id }, "-created_date");
       }
 
-      // Load the other company's details for ALL accepted connections (both buyers and suppliers)
+      // Load the other company's details for ALL accepted connections
       const acceptedConns = conns.filter(c => c.status === "accepted");
       if (acceptedConns.length > 0) {
         const isBuyerComp = comp.company_type === "buyer";
+        // For buyers: other party is always the supplier. For suppliers: other party is always the buyer.
         const uniqueIds = [...new Set(acceptedConns.map(c =>
           isBuyerComp ? c.supplier_company_id : c.buyer_company_id
         ).filter(Boolean))];
@@ -104,13 +105,20 @@ export default function Connections() {
   const accepted = connections.filter(c => c.status === "accepted");
   const rejected = connections.filter(c => c.status === "rejected");
 
-  // For buyers: all pending are "received" (from suppliers). No "sent" for buyers.
-  // For suppliers: all pending are "sent" (they initiated). No "received" for suppliers.
-  // Split: received = the user needs to respond; sent = waiting for the other party.
-  const pendingReceived = isBuyer ? pending : []; // buyers receive from suppliers
-  const pendingSent = !isBuyer ? pending : [];    // suppliers sent to buyers
+  // Split pending by who initiated:
+  // "received" = someone else initiated → you need to respond
+  // "sent" = you initiated → waiting for their response
+  const pendingReceived = pending.filter(c => {
+    if (isBuyer) return c.initiated_by_type === "supplier" || !c.initiated_by_type; // supplier sent to buyer
+    return c.initiated_by_type === "buyer"; // buyer sent to supplier
+  });
+  const pendingSent = pending.filter(c => {
+    if (isBuyer) return c.initiated_by_type === "buyer"; // buyer initiated
+    return c.initiated_by_type === "supplier" || !c.initiated_by_type; // supplier initiated (default)
+  });
 
   const ConnectionCard = ({ conn }) => {
+    // The "other" party is always the one that is NOT the current company
     const otherName = isBuyer ? conn.supplier_company_name : conn.buyer_company_name;
     const otherId = isBuyer ? conn.supplier_company_id : conn.buyer_company_id;
     const otherInfo = conn.status === "accepted" ? buyerDetails[otherId] : null;
@@ -164,8 +172,8 @@ export default function Connections() {
 
             {/* Actions */}
             <div className="flex items-center gap-2 shrink-0">
-              {/* Buyer accepts/rejects supplier requests */}
-              {conn.status === "pending" && isBuyer && (
+              {/* Show accept/reject if this connection was received (initiated by the other party) */}
+              {conn.status === "pending" && pendingReceived.includes(conn) && (
                 <>
                   <Button size="sm" onClick={() => requestConfirm(conn.id, "accepted")} className="bg-green-600 hover:bg-green-700 text-white rounded-full">
                     <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> {t.accept}
@@ -175,18 +183,8 @@ export default function Connections() {
                   </Button>
                 </>
               )}
-              {/* Active supplier accepts/rejects buyer connections */}
-              {conn.status === "pending" && isActiveSupplier && (
-                <>
-                  <Button size="sm" onClick={() => requestConfirm(conn.id, "accepted")} className="bg-green-600 hover:bg-green-700 text-white rounded-full">
-                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> {t.accept}
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => requestConfirm(conn.id, "rejected")} className="rounded-full text-red-600 border-red-200 hover:bg-red-50">
-                    <XCircle className="w-3.5 h-3.5 mr-1" /> {t.reject}
-                  </Button>
-                </>
-              )}
-              {conn.status === "pending" && !isBuyer && !isActiveSupplier && (
+              {/* Waiting badge for sent requests */}
+              {conn.status === "pending" && pendingSent.includes(conn) && (
                 <Badge className="bg-amber-100 text-amber-700 text-xs">
                   <Clock className="w-3 h-3 mr-1" /> {t.waiting}
                 </Badge>
@@ -239,34 +237,26 @@ export default function Connections() {
           ) : (
             <>
               {/* Received — needs user's response */}
-              {isBuyer && (
+              {pendingReceived.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-sm font-semibold text-[#1B2A4A]">{t.received}</span>
                     <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">{pendingReceived.length}</span>
                     <span className="text-xs text-slate-400 ml-1">— {t.receivedSub}</span>
                   </div>
-                  {pendingReceived.length === 0 ? (
-                    <p className="text-sm text-slate-400 py-4 text-center">{t.noReceived}</p>
-                  ) : (
-                    <div className="space-y-3">{pendingReceived.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
-                  )}
+                  <div className="space-y-3">{pendingReceived.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
                 </div>
               )}
 
               {/* Sent — waiting for the other party */}
-              {!isBuyer && (
+              {pendingSent.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-sm font-semibold text-[#1B2A4A]">{t.sent}</span>
                     <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">{pendingSent.length}</span>
                     <span className="text-xs text-slate-400 ml-1">— {t.sentSub}</span>
                   </div>
-                  {pendingSent.length === 0 ? (
-                    <p className="text-sm text-slate-400 py-4 text-center">{t.noSent}</p>
-                  ) : (
-                    <div className="space-y-3">{pendingSent.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
-                  )}
+                  <div className="space-y-3">{pendingSent.map(c => <ConnectionCard key={c.id} conn={c} />)}</div>
                 </div>
               )}
             </>
