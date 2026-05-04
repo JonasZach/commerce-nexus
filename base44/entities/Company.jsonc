@@ -18,6 +18,35 @@
       "type": "string",
       "description": "Type/industry of the company"
     },
+    "product_type": {
+      "type": "string",
+      "enum": [
+        "Agro & Agriculture",
+        "Apparel & Fashion",
+        "Arts, Crafts & Gifts",
+        "Automotive & Automobile",
+        "Chemicals",
+        "Computer & IT",
+        "Construction & Real Estate",
+        "Electronics & Electrical",
+        "Energy & Power",
+        "Food & Beverage",
+        "Furniture & Decor",
+        "Health & Medical",
+        "Home Appliances",
+        "Lights & Lighting",
+        "Machinery & Industrial Supplies",
+        "Minerals & Raw Materials",
+        "Office Supplies",
+        "Paper, Printing & Packaging",
+        "Rubber & Plastic Products",
+        "Security & Protection",
+        "Sports & Entertainment",
+        "Textiles Leather & Jute",
+        "Tools & Hardware"
+      ],
+      "description": "Primary product/service type of the company"
+    },
     "country": {
       "type": "string",
       "description": "Country of headquarters"

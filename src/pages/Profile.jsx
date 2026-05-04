@@ -8,6 +8,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Building2, Save } from "lucide-react";
+
+const PRODUCT_TYPES = [
+  "Agro & Agriculture", "Apparel & Fashion", "Arts, Crafts & Gifts",
+  "Automotive & Automobile", "Chemicals", "Computer & IT",
+  "Construction & Real Estate", "Electronics & Electrical", "Energy & Power",
+  "Food & Beverage", "Furniture & Decor", "Health & Medical",
+  "Home Appliances", "Lights & Lighting", "Machinery & Industrial Supplies",
+  "Minerals & Raw Materials", "Office Supplies", "Paper, Printing & Packaging",
+  "Rubber & Plastic Products", "Security & Protection", "Sports & Entertainment",
+  "Textiles Leather & Jute", "Tools & Hardware"
+];
 import SubscriptionCard from "@/components/profile/SubscriptionCard";
 
 const MARKETS = ["Cyprus", "Greece", "Europe", "Arabian Countries"];
@@ -135,6 +146,23 @@ export default function Profile() {
                 onChange={(e) => setFormData(p => ({ ...p, country: e.target.value }))}
               />
             </div>
+          </div>
+
+          <div>
+            <Label>Product / Service Type</Label>
+            <Select
+              value={formData.product_type || ""}
+              onValueChange={(v) => setFormData(p => ({ ...p, product_type: v }))}
+            >
+              <SelectTrigger className="mt-1.5">
+                <SelectValue placeholder="Select product type..." />
+              </SelectTrigger>
+              <SelectContent>
+                {PRODUCT_TYPES.map(pt => (
+                  <SelectItem key={pt} value={pt}>{pt}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div>

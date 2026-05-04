@@ -14,6 +14,18 @@ export default function BrowseCompanies() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [marketFilter, setMarketFilter] = useState("all");
+  const [productFilter, setProductFilter] = useState("all");
+
+  const PRODUCT_TYPES = [
+    "Agro & Agriculture", "Apparel & Fashion", "Arts, Crafts & Gifts",
+    "Automotive & Automobile", "Chemicals", "Computer & IT",
+    "Construction & Real Estate", "Electronics & Electrical", "Energy & Power",
+    "Food & Beverage", "Furniture & Decor", "Health & Medical",
+    "Home Appliances", "Lights & Lighting", "Machinery & Industrial Supplies",
+    "Minerals & Raw Materials", "Office Supplies", "Paper, Printing & Packaging",
+    "Rubber & Plastic Products", "Security & Protection", "Sports & Entertainment",
+    "Textiles Leather & Jute", "Tools & Hardware"
+  ];
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
@@ -35,7 +47,8 @@ export default function BrowseCompanies() {
     const matchSearch = !search || c.company_name?.toLowerCase().includes(search.toLowerCase()) || c.business_type?.toLowerCase().includes(search.toLowerCase());
     const matchType = typeFilter === "all" || c.company_type === typeFilter;
     const matchMarket = marketFilter === "all" || c.preferred_markets?.includes(marketFilter);
-    return matchSearch && matchType && matchMarket;
+    const matchProduct = productFilter === "all" || c.product_type === productFilter;
+    return matchSearch && matchType && matchMarket && matchProduct;
   });
 
   if (loading) {
@@ -54,7 +67,7 @@ export default function BrowseCompanies() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <Input
@@ -84,6 +97,17 @@ export default function BrowseCompanies() {
             <SelectItem value="Greece">Greece</SelectItem>
             <SelectItem value="Europe">Europe</SelectItem>
             <SelectItem value="Arabian Countries">Arabian Countries</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={productFilter} onValueChange={setProductFilter}>
+          <SelectTrigger className="w-56">
+            <SelectValue placeholder="Product Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Product Types</SelectItem>
+            {PRODUCT_TYPES.map(pt => (
+              <SelectItem key={pt} value={pt}>{pt}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
