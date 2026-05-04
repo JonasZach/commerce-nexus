@@ -8,6 +8,50 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Building2, Save } from "lucide-react";
+import { useLang } from "@/lib/LanguageContext";
+
+const T = {
+  en: {
+    title: "Company Profile",
+    companyInfo: "Company Information",
+    logo: "Company Logo",
+    uploading: "Uploading...",
+    changeLogo: "Change logo",
+    companyName: "Company Name",
+    email: "Email",
+    phone: "Phone",
+    country: "Country",
+    productType: "Product / Service Type",
+    selectType: "Select product type...",
+    description: "Description",
+    preferredMarkets: "Preferred Markets",
+    acceptConnections: "Accept Connection Requests",
+    acceptOn: "Others can send you connection requests",
+    acceptOff: "You are not accepting new connection requests",
+    saving: "Saving...",
+    save: "Save Changes",
+  },
+  gr: {
+    title: "Προφίλ Εταιρείας",
+    companyInfo: "Πληροφορίες Εταιρείας",
+    logo: "Λογότυπο Εταιρείας",
+    uploading: "Μεταφόρτωση...",
+    changeLogo: "Αλλαγή λογοτύπου",
+    companyName: "Όνομα Εταιρείας",
+    email: "Email",
+    phone: "Τηλέφωνο",
+    country: "Χώρα",
+    productType: "Τύπος Προϊόντος / Υπηρεσίας",
+    selectType: "Επιλέξτε τύπο...",
+    description: "Περιγραφή",
+    preferredMarkets: "Προτιμώμενες Αγορές",
+    acceptConnections: "Αποδοχή Αιτημάτων Σύνδεσης",
+    acceptOn: "Άλλοι μπορούν να σας στείλουν αιτήματα σύνδεσης",
+    acceptOff: "Δεν αποδέχεστε νέα αιτήματα σύνδεσης",
+    saving: "Αποθήκευση...",
+    save: "Αποθήκευση Αλλαγών",
+  },
+};
 
 const PRODUCT_TYPES = [
   "Agro & Agriculture", "Apparel & Fashion", "Arts, Crafts & Gifts",
@@ -24,6 +68,8 @@ import SubscriptionCard from "@/components/profile/SubscriptionCard";
 const MARKETS = ["Cyprus", "Greece", "Europe", "Arabian Countries"];
 
 export default function Profile() {
+  const { lang } = useLang();
+  const t = T[lang];
   const [company, setCompany] = useState(null);
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -79,7 +125,7 @@ export default function Profile() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-[#1B2A4A]">Company Profile</h1>
+      <h1 className="text-2xl font-bold text-[#1B2A4A]">{t.title}</h1>
 
       {/* Subscription Section for Suppliers */}
       {isSupplier && <SubscriptionCard company={company} />}
@@ -87,12 +133,12 @@ export default function Profile() {
       {/* Profile Form */}
       <Card className="border-0 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg">Company Information</CardTitle>
+          <CardTitle className="text-lg">{t.companyInfo}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Logo */}
           <div>
-            <Label>Company Logo</Label>
+            <Label>{t.logo}</Label>
             <div className="mt-1.5 flex items-center gap-4">
               {formData.logo_url ? (
                 <img src={formData.logo_url} alt="Logo" className="w-16 h-16 rounded-xl object-cover border" />
@@ -104,7 +150,7 @@ export default function Profile() {
               <label className="cursor-pointer">
                 <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
                 <span className="text-sm text-[#2AA5A0] font-medium hover:underline">
-                  {uploading ? "Uploading..." : "Change logo"}
+                  {uploading ? t.uploading : t.changeLogo}
                 </span>
               </label>
             </div>
@@ -112,7 +158,7 @@ export default function Profile() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label>Company Name</Label>
+              <Label>{t.companyName}</Label>
               <Input
                 className="mt-1.5"
                 value={formData.company_name || ""}
@@ -120,7 +166,7 @@ export default function Profile() {
               />
             </div>
             <div>
-              <Label>Email</Label>
+              <Label>{t.email}</Label>
               <Input
                 className="mt-1.5"
                 value={formData.email || ""}
@@ -131,7 +177,7 @@ export default function Profile() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label>Phone</Label>
+              <Label>{t.phone}</Label>
               <Input
                 className="mt-1.5"
                 value={formData.phone || ""}
@@ -139,7 +185,7 @@ export default function Profile() {
               />
             </div>
             <div>
-              <Label>Country</Label>
+              <Label>{t.country}</Label>
               <Input
                 className="mt-1.5"
                 value={formData.country || ""}
@@ -149,13 +195,13 @@ export default function Profile() {
           </div>
 
           <div>
-            <Label>Product / Service Type</Label>
+            <Label>{t.productType}</Label>
             <Select
               value={formData.product_type || ""}
               onValueChange={(v) => setFormData(p => ({ ...p, product_type: v }))}
             >
               <SelectTrigger className="mt-1.5">
-                <SelectValue placeholder="Select product type..." />
+                <SelectValue placeholder={t.selectType} />
               </SelectTrigger>
               <SelectContent>
                 {PRODUCT_TYPES.map(pt => (
@@ -166,7 +212,7 @@ export default function Profile() {
           </div>
 
           <div>
-            <Label>Description</Label>
+            <Label>{t.description}</Label>
             <Textarea
               className="mt-1.5"
               rows={3}
@@ -176,7 +222,7 @@ export default function Profile() {
           </div>
 
           <div>
-            <Label className="mb-2 block">Preferred Markets</Label>
+            <Label className="mb-2 block">{t.preferredMarkets}</Label>
             <div className="flex flex-wrap gap-2">
               {MARKETS.map(market => (
                 <button
@@ -198,11 +244,9 @@ export default function Profile() {
           {/* Connection Requests Toggle */}
           <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50">
             <div>
-              <p className="font-medium text-[#1B2A4A] text-sm">Accept Connection Requests</p>
+              <p className="font-medium text-[#1B2A4A] text-sm">{t.acceptConnections}</p>
               <p className="text-xs text-slate-500 mt-0.5">
-                {formData.accept_connections === false
-                  ? "You are not accepting new connection requests"
-                  : "Others can send you connection requests"}
+                {formData.accept_connections === false ? t.acceptOff : t.acceptOn}
               </p>
             </div>
             <Switch
@@ -217,7 +261,7 @@ export default function Profile() {
             className="bg-[#1B2A4A] hover:bg-[#243556] text-white"
           >
             <Save className="w-4 h-4 mr-2" />
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? t.saving : t.save}
           </Button>
         </CardContent>
       </Card>
