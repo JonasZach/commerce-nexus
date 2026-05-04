@@ -30,21 +30,25 @@ export default function Connections() {
         conns = await base44.entities.ConnectionRequest.filter({ buyer_company_id: comp.id }, "-created_date");
       } else {
         conns = await base44.entities.ConnectionRequest.filter({ supplier_company_id: comp.id }, "-created_date");
-        // For active suppliers, load buyer details for all connections
-        if (comp.is_active_member && conns.length > 0) {
-          const uniqueBuyerIds = [...new Set(conns.map(c => c.buyer_company_id).filter(Boolean))];
-          const details = {};
-          await Promise.all(uniqueBuyerIds.map(async (id) => {
-            try {
-              const result = await base44.entities.Company.get(id);
-              if (result) details[id] = result;
-            } catch (e) {
-              // company not found, skip
-            }
-          }));
-          setBuyerDetails(details);
-        }
       }
+
+      // Load the other company's details for ALL accepted connections (both buyers and suppliers)
+      const acceptedConns = conns.filter(c => c.status === "accepted");
+      if (acceptedConns.length > 0) {
+        const isBuyerComp = comp.company_type === "buyer";
+        const uniqueIds = [...new Set(acceptedConns.map(c =>
+          isBuyerComp ? c.supplier_company_id : c.buyer_company_id
+        ).filter(Boolean))];
+        const details = {};
+        await Promise.all(uniqueIds.map(async (id) => {
+          try {
+            const result = await base44.entities.Company.get(id);
+            if (result) details[id] = result;
+          } catch (e) {}
+        }));
+        setBuyerDetails(details);
+      }
+
       setConnections(conns);
     }
     setLoading(false);
@@ -76,7 +80,8 @@ export default function Connections() {
 
   const ConnectionCard = ({ conn }) => {
     const otherName = isBuyer ? conn.supplier_company_name : conn.buyer_company_name;
-    const buyerInfo = !isBuyer ? buyerDetails[conn.buyer_company_id] : null;
+    const otherId = isBuyer ? conn.supplier_company_id : conn.buyer_company_id;
+    const otherInfo = conn.status === "accepted" ? buyerDetails[otherId] : null;
 
     return (
       <Card className="border-0 shadow-sm">
@@ -84,8 +89,8 @@ export default function Connections() {
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div className="flex items-start gap-3 flex-1 min-w-0">
               <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-                {buyerInfo?.logo_url ? (
-                  <img src={buyerInfo.logo_url} className="w-10 h-10 rounded-xl object-cover" alt="" />
+                {otherInfo?.logo_url ? (
+                  <img src={otherInfo.logo_url} className="w-10 h-10 rounded-xl object-cover" alt="" />
                 ) : (
                   <Building2 className="w-5 h-5 text-slate-400" />
                 )}
@@ -94,35 +99,26 @@ export default function Connections() {
                 <h3 className="font-semibold text-[#1B2A4A]">{otherName}</h3>
                 {conn.message && <p className="text-sm text-slate-500 mt-1 italic">"{conn.message}"</p>}
 
-                {/* Buyer details visible to active suppliers */}
-                {isActiveSupplier && buyerInfo && (
-                  <div className="mt-2 space-y-1.5 bg-slate-50 rounded-lg p-3">
-                    {buyerInfo.description && (
-                      <p className="text-xs text-slate-600 mb-2">{buyerInfo.description}</p>
-                    )}
-                    {buyerInfo.email && (
+                {/* Show contact details for accepted connections — both buyers and suppliers */}
+                {conn.status === "accepted" && otherInfo && (
+                  <div className="mt-3 space-y-1.5 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-2">Contact Details</p>
+                    {otherInfo.product_type && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <Mail className="w-3.5 h-3.5 text-[#2AA5A0]" />
-                        <a href={`mailto:${buyerInfo.email}`} className="hover:text-[#2AA5A0]">{buyerInfo.email}</a>
+                        <span className="text-[#2AA5A0] font-medium">🏷</span>
+                        <span>{otherInfo.product_type}</span>
                       </div>
                     )}
-                    {buyerInfo.phone && (
+                    {otherInfo.email && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <Phone className="w-3.5 h-3.5 text-[#2AA5A0]" />
-                        <a href={`tel:${buyerInfo.phone}`} className="hover:text-[#2AA5A0]">{buyerInfo.phone}</a>
+                        <Mail className="w-3.5 h-3.5 text-[#2AA5A0] shrink-0" />
+                        <a href={`mailto:${otherInfo.email}`} className="hover:text-[#2AA5A0]">{otherInfo.email}</a>
                       </div>
                     )}
-                    {buyerInfo.country && (
+                    {otherInfo.phone && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
-                        <MapPin className="w-3.5 h-3.5 text-[#2AA5A0]" />
-                        <span>{buyerInfo.country}{buyerInfo.business_type ? ` · ${buyerInfo.business_type}` : ""}</span>
-                      </div>
-                    )}
-                    {buyerInfo.preferred_markets?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-1">
-                        {buyerInfo.preferred_markets.map(m => (
-                          <span key={m} className="text-[10px] bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded-full">{m}</span>
-                        ))}
+                        <Phone className="w-3.5 h-3.5 text-[#2AA5A0] shrink-0" />
+                        <a href={`tel:${otherInfo.phone}`} className="hover:text-[#2AA5A0]">{otherInfo.phone}</a>
                       </div>
                     )}
                   </div>
