@@ -1,5 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { useLang } from "@/lib/LanguageContext";
+
+const T = {
+  en: {
+    title: "Browse Companies", sub: "Discover suppliers and buyers on the platform",
+    search: "Search by company name or type...", allTypes: "All Types", suppliers: "Suppliers", buyers: "Buyers",
+    allMarkets: "All Markets", allProducts: "All Product Types", noResults: "No companies found matching your filters",
+    supplier: "supplier", buyer: "buyer", active: "Active",
+  },
+  gr: {
+    title: "Εταιρείες", sub: "Ανακαλύψτε προμηθευτές και αγοραστές στην πλατφόρμα",
+    search: "Αναζήτηση...", allTypes: "Όλοι οι Τύποι", suppliers: "Προμηθευτές", buyers: "Αγοραστές",
+    allMarkets: "Όλες οι Αγορές", allProducts: "Όλοι οι Τύποι Προϊόντων", noResults: "Δεν βρέθηκαν εταιρείες",
+    supplier: "Προμηθευτής", buyer: "Αγοραστής", active: "Ενεργό",
+  },
+};
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +24,8 @@ import { Search, Building2, Globe, MapPin, Filter } from "lucide-react";
 import CompanyDetailModal from "@/components/companies/CompanyDetailModal";
 
 export default function BrowseCompanies() {
+  const { lang } = useLang();
+  const t = T[lang];
   const [companies, setCompanies] = useState([]);
   const [myCompany, setMyCompany] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,8 +80,8 @@ export default function BrowseCompanies() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1B2A4A]">Browse Companies</h1>
-        <p className="text-slate-500 mt-1">Discover suppliers and buyers on the platform</p>
+        <h1 className="text-2xl font-bold text-[#1B2A4A]">{t.title}</h1>
+        <p className="text-slate-500 mt-1">{t.sub}</p>
       </div>
 
       {/* Filters */}
@@ -72,7 +90,7 @@ export default function BrowseCompanies() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <Input
             className="pl-10"
-            placeholder="Search by company name or type..."
+            placeholder={t.search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -82,9 +100,9 @@ export default function BrowseCompanies() {
             <SelectValue placeholder="Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="supplier">Suppliers</SelectItem>
-            <SelectItem value="buyer">Buyers</SelectItem>
+            <SelectItem value="all">{t.allTypes}</SelectItem>
+            <SelectItem value="supplier">{t.suppliers}</SelectItem>
+            <SelectItem value="buyer">{t.buyers}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={marketFilter} onValueChange={setMarketFilter}>
@@ -92,7 +110,7 @@ export default function BrowseCompanies() {
             <SelectValue placeholder="Market" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Markets</SelectItem>
+            <SelectItem value="all">{t.allMarkets}</SelectItem>
             <SelectItem value="Cyprus">Cyprus</SelectItem>
             <SelectItem value="Greece">Greece</SelectItem>
             <SelectItem value="Europe">Europe</SelectItem>
@@ -104,7 +122,7 @@ export default function BrowseCompanies() {
             <SelectValue placeholder="Product Type" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Product Types</SelectItem>
+            <SelectItem value="all">{t.allProducts}</SelectItem>
             {PRODUCT_TYPES.map(pt => (
               <SelectItem key={pt} value={pt}>{pt}</SelectItem>
             ))}
@@ -136,11 +154,11 @@ export default function BrowseCompanies() {
                           : "bg-green-50 text-green-700"
                       }`}
                     >
-                      {company.company_type}
+                      {company.company_type === "supplier" ? t.supplier : t.buyer}
                     </Badge>
                     {company.is_active_member && (
                       <Badge variant="secondary" className="text-[10px] bg-[#2AA5A0]/10 text-[#2AA5A0]">
-                        Active
+                        {t.active}
                       </Badge>
                     )}
                   </div>
@@ -191,7 +209,7 @@ export default function BrowseCompanies() {
       {filtered.length === 0 && (
         <div className="text-center py-16">
           <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500">No companies found matching your filters</p>
+          <p className="text-slate-500">{t.noResults}</p>
         </div>
       )}
     </div>

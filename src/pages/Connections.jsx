@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { useLang } from "@/lib/LanguageContext";
+
+const T = {
+  en: {
+    title: "Connections", buyerSub: "Manage connection requests from suppliers", supplierSub: "Track your connection requests to buyers",
+    pending: "Pending", accepted: "Accepted", rejected: "Rejected",
+    noPending: "No pending connections", noAccepted: "No accepted connections yet", noRejected: "No rejected connections",
+    accept: "Accept", reject: "Reject", waiting: "Waiting", connected: "Connected",
+    contactDetails: "Contact Details",
+  },
+  gr: {
+    title: "Συνδέσεις", buyerSub: "Διαχείριση αιτημάτων σύνδεσης από προμηθευτές", supplierSub: "Παρακολούθηση αιτημάτων σύνδεσης προς αγοραστές",
+    pending: "Εκκρεμή", accepted: "Αποδεκτά", rejected: "Απορριφθέντα",
+    noPending: "Δεν υπάρχουν εκκρεμή", noAccepted: "Δεν υπάρχουν αποδεκτές συνδέσεις", noRejected: "Δεν υπάρχουν απορριφθέντα",
+    accept: "Αποδοχή", reject: "Απόρριψη", waiting: "Αναμονή", connected: "Συνδεδεμένο",
+    contactDetails: "Στοιχεία Επικοινωνίας",
+  },
+};
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +28,8 @@ import {
 import ConfirmDialog from "../components/connections/ConfirmDialog.jsx";
 
 export default function Connections() {
+  const { lang } = useLang();
+  const t = T[lang];
   const [company, setCompany] = useState(null);
   const [connections, setConnections] = useState([]);
   const [buyerDetails, setBuyerDetails] = useState({}); // id -> company object
@@ -102,7 +122,7 @@ export default function Connections() {
                 {/* Show contact details for accepted connections — both buyers and suppliers */}
                 {conn.status === "accepted" && otherInfo && (
                   <div className="mt-3 space-y-1.5 bg-slate-50 border border-slate-200 rounded-lg p-3">
-                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-2">Contact Details</p>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-2">{t.contactDetails}</p>
                     {otherInfo.product_type && (
                       <div className="flex items-center gap-2 text-xs text-slate-600">
                         <span className="text-[#2AA5A0] font-medium">🏷</span>
@@ -136,10 +156,10 @@ export default function Connections() {
               {conn.status === "pending" && isBuyer && (
                 <>
                   <Button size="sm" onClick={() => requestConfirm(conn.id, "accepted")} className="bg-green-600 hover:bg-green-700 text-white rounded-full">
-                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Accept
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> {t.accept}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => requestConfirm(conn.id, "rejected")} className="rounded-full text-red-600 border-red-200 hover:bg-red-50">
-                    <XCircle className="w-3.5 h-3.5 mr-1" /> Reject
+                    <XCircle className="w-3.5 h-3.5 mr-1" /> {t.reject}
                   </Button>
                 </>
               )}
@@ -147,21 +167,21 @@ export default function Connections() {
               {conn.status === "pending" && isActiveSupplier && (
                 <>
                   <Button size="sm" onClick={() => requestConfirm(conn.id, "accepted")} className="bg-green-600 hover:bg-green-700 text-white rounded-full">
-                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Accept
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> {t.accept}
                   </Button>
                   <Button size="sm" variant="outline" onClick={() => requestConfirm(conn.id, "rejected")} className="rounded-full text-red-600 border-red-200 hover:bg-red-50">
-                    <XCircle className="w-3.5 h-3.5 mr-1" /> Reject
+                    <XCircle className="w-3.5 h-3.5 mr-1" /> {t.reject}
                   </Button>
                 </>
               )}
               {conn.status === "pending" && !isBuyer && !isActiveSupplier && (
                 <Badge className="bg-amber-100 text-amber-700 text-xs">
-                  <Clock className="w-3 h-3 mr-1" /> Waiting
+                  <Clock className="w-3 h-3 mr-1" /> {t.waiting}
                 </Badge>
               )}
               {conn.status === "accepted" && (
                 <Badge className="bg-green-100 text-green-700 text-xs">
-                  <CheckCircle2 className="w-3 h-3 mr-1" /> Connected
+                  <CheckCircle2 className="w-3 h-3 mr-1" /> {t.connected}
                 </Badge>
               )}
               {conn.status === "rejected" && (
@@ -179,22 +199,22 @@ export default function Connections() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-[#1B2A4A]">Connections</h1>
+        <h1 className="text-2xl font-bold text-[#1B2A4A]">{t.title}</h1>
         <p className="text-slate-500 mt-1">
-          {isBuyer ? "Manage connection requests from suppliers" : "Track your connection requests to buyers"}
+          {isBuyer ? t.buyerSub : t.supplierSub}
         </p>
       </div>
 
       <Tabs defaultValue="pending">
         <TabsList className="bg-slate-100">
           <TabsTrigger value="pending" className="gap-1.5">
-            <Clock className="w-3.5 h-3.5" /> Pending ({pending.length})
+            <Clock className="w-3.5 h-3.5" /> {t.pending} ({pending.length})
           </TabsTrigger>
           <TabsTrigger value="accepted" className="gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Accepted ({accepted.length})
+            <CheckCircle2 className="w-3.5 h-3.5" /> {t.accepted} ({accepted.length})
           </TabsTrigger>
           <TabsTrigger value="rejected" className="gap-1.5">
-            <XCircle className="w-3.5 h-3.5" /> Rejected ({rejected.length})
+            <XCircle className="w-3.5 h-3.5" /> {t.rejected} ({rejected.length})
           </TabsTrigger>
         </TabsList>
 
@@ -202,7 +222,7 @@ export default function Connections() {
           {pending.length === 0 ? (
             <div className="text-center py-12">
               <Clock className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">No pending connections</p>
+              <p className="text-slate-500">{t.noPending}</p>
             </div>
           ) : pending.map(c => <ConnectionCard key={c.id} conn={c} />)}
         </TabsContent>
@@ -211,7 +231,7 @@ export default function Connections() {
           {accepted.length === 0 ? (
             <div className="text-center py-12">
               <Link2 className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">No accepted connections yet</p>
+              <p className="text-slate-500">{t.noAccepted}</p>
             </div>
           ) : accepted.map(c => <ConnectionCard key={c.id} conn={c} />)}
         </TabsContent>
@@ -220,7 +240,7 @@ export default function Connections() {
           {rejected.length === 0 ? (
             <div className="text-center py-12">
               <XCircle className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">No rejected connections</p>
+              <p className="text-slate-500">{t.noRejected}</p>
             </div>
           ) : rejected.map(c => <ConnectionCard key={c.id} conn={c} />)}
         </TabsContent>

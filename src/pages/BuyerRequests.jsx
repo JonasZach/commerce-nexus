@@ -1,5 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { useLang } from "@/lib/LanguageContext";
+
+const T = {
+  en: {
+    myRequests: "My Requests", buyerRequests: "Buyer Requests",
+    myRequestsSub: "Create and manage your purchase requests", buyerRequestsSub: "Browse and respond to buyer needs",
+    newRequest: "New Request", createRequest: "Create Purchase Request",
+    title: "Title *", titlePlaceholder: "e.g., Looking for organic olive oil supplier",
+    description: "Description *", descPlaceholder: "Describe what you need in detail...",
+    category: "Category", select: "Select", targetMarkets: "Target Markets",
+    creating: "Creating...", createBtn: "Create Request",
+    upgradeTitle: "Upgrade Required", upgradeSub: "You need an Active Membership to view and respond to buyer requests.",
+    noRequests: "No requests yet. Create your first one!", noOpenRequests: "No open requests at the moment.",
+    requestSent: "Request Sent", notAccepting: "Not Accepting", sending: "Sending...", connect: "Connect",
+  },
+  gr: {
+    myRequests: "Τα Αιτήματά μου", buyerRequests: "Αιτήματα Αγοραστών",
+    myRequestsSub: "Δημιουργία και διαχείριση αιτημάτων αγοράς", buyerRequestsSub: "Περιηγηθείτε και απαντήστε σε αιτήματα",
+    newRequest: "Νέο Αίτημα", createRequest: "Δημιουργία Αιτήματος Αγοράς",
+    title: "Τίτλος *", titlePlaceholder: "π.χ. Αναζητώ προμηθευτή ελαιολάδου",
+    description: "Περιγραφή *", descPlaceholder: "Περιγράψτε τι χρειάζεστε...",
+    category: "Κατηγορία", select: "Επιλογή", targetMarkets: "Αγορές-Στόχοι",
+    creating: "Δημιουργία...", createBtn: "Δημιουργία Αιτήματος",
+    upgradeTitle: "Απαιτείται Αναβάθμιση", upgradeSub: "Χρειάζεστε Ενεργή Συνδρομή για να δείτε και να απαντήσετε σε αιτήματα αγοραστών.",
+    noRequests: "Δεν υπάρχουν αιτήματα. Δημιουργήστε το πρώτο!", noOpenRequests: "Δεν υπάρχουν ανοιχτά αιτήματα αυτή τη στιγμή.",
+    requestSent: "Εστάλη", notAccepting: "Δεν δέχεται", sending: "Αποστολή...", connect: "Σύνδεση",
+  },
+};
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,6 +56,8 @@ const CATEGORIES = [
 const MARKETS = ["Cyprus", "Greece", "Europe", "Arabian Countries"];
 
 export default function BuyerRequests() {
+  const { lang } = useLang();
+  const t = T[lang];
   const [company, setCompany] = useState(null);
   const [requests, setRequests] = useState([]);
   const [myConnections, setMyConnections] = useState([]);
@@ -121,10 +151,8 @@ export default function BuyerRequests() {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
         <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-[#1B2A4A]">Upgrade Required</h2>
-        <p className="text-slate-500 mt-2">
-          You need an Active Membership to view and respond to buyer requests.
-        </p>
+        <h2 className="text-xl font-bold text-[#1B2A4A]">{t.upgradeTitle}</h2>
+        <p className="text-slate-500 mt-2">{t.upgradeSub}</p>
       </div>
     );
   }
@@ -134,54 +162,54 @@ export default function BuyerRequests() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#1B2A4A]">
-            {isBuyer ? "My Requests" : "Buyer Requests"}
+            {isBuyer ? t.myRequests : t.buyerRequests}
           </h1>
           <p className="text-slate-500 mt-1">
-            {isBuyer ? "Create and manage your purchase requests" : "Browse and respond to buyer needs"}
+            {isBuyer ? t.myRequestsSub : t.buyerRequestsSub}
           </p>
         </div>
         {isBuyer && (
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full">
-                <Plus className="w-4 h-4 mr-2" /> New Request
+                <Plus className="w-4 h-4 mr-2" /> {t.newRequest}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle>Create Purchase Request</DialogTitle>
+                <DialogTitle>{t.createRequest}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 mt-4">
                 <div>
-                  <Label>Title *</Label>
+                  <Label>{t.title}</Label>
                   <Input
                     className="mt-1.5"
-                    placeholder="e.g., Looking for organic olive oil supplier"
+                    placeholder={t.titlePlaceholder}
                     value={formData.title || ""}
                     onChange={(e) => setFormData(p => ({ ...p, title: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <Label>Description *</Label>
+                  <Label>{t.description}</Label>
                   <Textarea
                     className="mt-1.5"
                     rows={3}
-                    placeholder="Describe what you need in detail..."
+                    placeholder={t.descPlaceholder}
                     value={formData.description || ""}
                     onChange={(e) => setFormData(p => ({ ...p, description: e.target.value }))}
                   />
                 </div>
                 <div>
-                  <Label>Category</Label>
+                  <Label>{t.category}</Label>
                   <Select value={formData.category || ""} onValueChange={(v) => setFormData(p => ({ ...p, category: v }))}>
-                    <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectTrigger className="mt-1.5"><SelectValue placeholder={t.select} /></SelectTrigger>
                     <SelectContent>
                       {CATEGORIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label className="mb-2 block">Target Markets</Label>
+                  <Label className="mb-2 block">{t.targetMarkets}</Label>
                   <div className="flex flex-wrap gap-2">
                     {MARKETS.map(m => (
                       <button
@@ -204,7 +232,7 @@ export default function BuyerRequests() {
                   disabled={!formData.title || !formData.description || saving}
                   className="w-full bg-[#1B2A4A] hover:bg-[#243556] text-white"
                 >
-                  {saving ? "Creating..." : "Create Request"}
+                  {saving ? t.creating : t.createBtn}
                 </Button>
               </div>
             </DialogContent>
@@ -216,7 +244,7 @@ export default function BuyerRequests() {
         <div className="text-center py-16">
           <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
           <p className="text-slate-500">
-            {isBuyer ? "No requests yet. Create your first one!" : "No open requests at the moment."}
+            {isBuyer ? t.noRequests : t.noOpenRequests}
           </p>
         </div>
       ) : (
@@ -262,11 +290,11 @@ export default function BuyerRequests() {
                   {isSupplier && (
                     alreadyConnected(req) ? (
                       <Badge className="bg-slate-100 text-slate-500 text-xs shrink-0">
-                        Request Sent
+                        {t.requestSent}
                       </Badge>
                     ) : req.accept_connections === false ? (
                       <Badge className="bg-slate-100 text-slate-400 text-xs shrink-0">
-                        Not Accepting
+                        {t.notAccepting}
                       </Badge>
                     ) : (
                       <Button
@@ -276,7 +304,7 @@ export default function BuyerRequests() {
                         className="bg-[#2AA5A0] hover:bg-[#249691] text-white rounded-full shrink-0"
                       >
                         <Send className="w-3.5 h-3.5 mr-1.5" />
-                        {connecting === req.id ? "Sending..." : "Connect"}
+                        {connecting === req.id ? t.sending : t.connect}
                       </Button>
                     )
                   )}

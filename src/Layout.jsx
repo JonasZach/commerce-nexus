@@ -13,21 +13,15 @@ import {
   User,
   ShieldCheck
 } from "lucide-react";
+import { useLang } from "@/lib/LanguageContext";
 import { Button } from "@/components/ui/button";
 
-const NAV_ITEMS_BUYER = [
-  { name: "Browse Companies", page: "BrowseCompanies", icon: Building2 },
-  { name: "View Requests", page: "BuyerRequests", icon: FileText },
-  { name: "Connections", page: "Connections", icon: Link2 },
-];
-
-const NAV_ITEMS_SUPPLIER = [
-  { name: "Browse Companies", page: "BrowseCompanies", icon: Building2 },
-  { name: "View Requests", page: "BuyerRequests", icon: FileText },
-  { name: "Connections", page: "Connections", icon: Link2 },
-];
-
 const PUBLIC_PAGES = ["Landing", "Register"];
+
+const NAV_LABELS = {
+  en: { browse: "Browse Companies", requests: "View Requests", connections: "Connections", profile: "Profile", admin: "Admin Panel", signout: "Sign Out" },
+  gr: { browse: "Εταιρείες", requests: "Αιτήματα", connections: "Συνδέσεις", profile: "Προφίλ", admin: "Διαχειριστής", signout: "Αποσύνδεση" },
+};
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -35,6 +29,7 @@ export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { lang, setLang } = useLang();
 
   useEffect(() => {
     loadUser();
@@ -67,7 +62,12 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
-  const navItems = company?.company_type === "supplier" ? NAV_ITEMS_SUPPLIER : NAV_ITEMS_BUYER;
+  const labels = NAV_LABELS[lang];
+  const navItems = [
+    { name: labels.browse, page: "BrowseCompanies", icon: Building2 },
+    { name: labels.requests, page: "BuyerRequests", icon: FileText },
+    { name: labels.connections, page: "Connections", icon: Link2 },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -96,7 +96,7 @@ export default function Layout({ children, currentPageName }) {
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         <div className="p-6 border-b border-white/10">
-          <Link to={createPageUrl("Dashboard")} className="flex items-center gap-3">
+          <Link to={createPageUrl("BrowseCompanies")} className="flex items-center gap-3">
             <img src="https://media.base44.com/images/public/699c29f5a59121aa54dbc179/82eb061a0_commerce-nexus-logo-400x130.png" alt="Commerce Nexus" className="h-8 w-auto brightness-0 invert" />
           </Link>
         </div>
@@ -142,6 +142,18 @@ export default function Layout({ children, currentPageName }) {
         </nav>
 
         <div className="p-3 border-t border-white/10">
+          {/* Language Toggle */}
+          <div className="flex items-center justify-center gap-1 mb-2 bg-white/5 rounded-lg p-1">
+            <button
+              onClick={() => setLang("en")}
+              className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "en" ? "bg-[#00AEEF] text-white" : "text-white/50 hover:text-white"}`}
+            >EN</button>
+            <button
+              onClick={() => setLang("gr")}
+              className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "gr" ? "bg-[#00AEEF] text-white" : "text-white/50 hover:text-white"}`}
+            >ΕΛ</button>
+          </div>
+
           <Link
             to={createPageUrl("Profile")}
             onClick={() => setSidebarOpen(false)}
@@ -152,7 +164,7 @@ export default function Layout({ children, currentPageName }) {
               }`}
           >
             <User className="w-[18px] h-[18px]" />
-            <span className="font-medium">Profile</span>
+            <span className="font-medium">{labels.profile}</span>
           </Link>
           {user?.role === "admin" && (
             <Link
@@ -165,7 +177,7 @@ export default function Layout({ children, currentPageName }) {
                 }`}
             >
               <ShieldCheck className="w-[18px] h-[18px]" />
-              <span className="font-medium">Admin Panel</span>
+              <span className="font-medium">{labels.admin}</span>
             </Link>
           )}
           <button
@@ -173,7 +185,7 @@ export default function Layout({ children, currentPageName }) {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-all w-full"
           >
             <LogOut className="w-[18px] h-[18px]" />
-            <span className="font-medium">Sign Out</span>
+            <span className="font-medium">{labels.signout}</span>
           </button>
         </div>
       </aside>

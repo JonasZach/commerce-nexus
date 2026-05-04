@@ -35,13 +35,15 @@ export default function Dashboard() {
 
     if (companies.length === 0) {
       if (me.role === "admin") {
-        // Admin with no company — redirect to admin panel
         navigate(createPageUrl("AdminDashboard"));
         return;
       }
       navigate(createPageUrl("Register"));
       return;
     }
+    // Dashboard removed — redirect to BrowseCompanies
+    navigate(createPageUrl("BrowseCompanies"));
+    return;
 
     const comp = companies[0];
     setCompany(comp);

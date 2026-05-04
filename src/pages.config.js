@@ -51,7 +51,6 @@ import AdminDashboard from './pages/AdminDashboard';
 import BrowseCompanies from './pages/BrowseCompanies';
 import BuyerRequests from './pages/BuyerRequests';
 import Connections from './pages/Connections';
-import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
@@ -63,7 +62,6 @@ export const PAGES = {
     "BrowseCompanies": BrowseCompanies,
     "BuyerRequests": BuyerRequests,
     "Connections": Connections,
-    "Dashboard": Dashboard,
     "Landing": Landing,
     "Profile": Profile,
     "Register": Register,
