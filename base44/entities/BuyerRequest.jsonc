@@ -1,0 +1,70 @@
+{
+  "name": "BuyerRequest",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short title for the request"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of what the buyer needs"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Packaged Food & Beverages",
+        "Meat, Dairy, Fruits & Canned Goods",
+        "Premium & Delicatessen Products",
+        "Industrial Materials",
+        "Contractors",
+        "Other"
+      ],
+      "description": "Product category"
+    },
+    "target_markets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Cyprus",
+          "Greece",
+          "Europe",
+          "Arabian Countries"
+        ]
+      },
+      "description": "Target markets for this request"
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Desired quantity or volume"
+    },
+    "budget_range": {
+      "type": "string",
+      "description": "Approximate budget range"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_progress",
+        "closed"
+      ],
+      "default": "open",
+      "description": "Status of the request"
+    },
+    "company_id": {
+      "type": "string",
+      "description": "ID of the buyer company"
+    },
+    "company_name": {
+      "type": "string",
+      "description": "Name of the buyer company"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "company_id"
+  ]
+}
