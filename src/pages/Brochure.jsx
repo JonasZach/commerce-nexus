@@ -109,16 +109,7 @@ export default function Brochure() {
             alt="Commerce Nexus"
             className="h-9 w-auto"
           />
-          <div className="flex items-center bg-slate-100 rounded-full p-1 gap-0.5">
-            <button
-              onClick={() => setLang("en")}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "en" ? "bg-white text-[#1B3A6B] shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
-            >EN</button>
-            <button
-              onClick={() => setLang("gr")}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "gr" ? "bg-white text-[#1B3A6B] shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
-            >ΕΛ</button>
-          </div>
+
         </div>
       </nav>
 
@@ -289,6 +280,16 @@ export default function Brochure() {
             className="h-7 w-auto brightness-0 invert"
           />
           <p className="text-sm">{t.footer}</p>
+          <div className="flex items-center bg-white/10 rounded-full p-1 gap-0.5">
+            <button
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "en" ? "bg-white text-[#1B3A6B] shadow-sm" : "text-white/50 hover:text-white"}`}
+            >EN</button>
+            <button
+              onClick={() => setLang("gr")}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "gr" ? "bg-white text-[#1B3A6B] shadow-sm" : "text-white/50 hover:text-white"}`}
+            >ΕΛ</button>
+          </div>
         </div>
       </footer>
     </div>
